@@ -67,6 +67,7 @@ def sendwhatmsg_instantly(
         wait_time: int = 15,
         tab_close: bool = False,
         close_time: int = 3,
+        browser: str = None
 ) -> None:
     """Send WhatsApp Message Instantly"""
 
@@ -77,7 +78,11 @@ def sendwhatmsg_instantly(
     if not fullmatch(r"^\+?[0-9]{2,4}\s?[0-9]{9,15}", phone_no):
         raise exceptions.InvalidPhoneNumber("Invalid Phone Number.")
 
-    web.open(f"https://web.whatsapp.com/send?phone={phone_no}")
+    if browser:
+        web.get(browser).open(f"https://web.whatsapp.com/send?phone={phone_no}&text={quote(message)}")
+    else:    
+        web.open(f"https://web.whatsapp.com/send?phone={phone_no}&text={quote(message)}")
+    
     time.sleep(wait_time)
     index = 0
     length = len(message)
